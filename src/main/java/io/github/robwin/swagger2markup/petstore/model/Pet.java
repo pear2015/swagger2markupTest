@@ -29,7 +29,9 @@ import java.util.List;
 
 public class Pet implements Identifiable<Long> {
   private long id;
+  @ApiModelProperty(value="分类",required=true,name="category",example="dog")
   private Category category;
+  @ApiModelProperty(value="用户名",required=true,name="name",example="dog")
   @Size(min=1, max=100)
   private String name;
   private List<String> photoUrls = new ArrayList<String>();

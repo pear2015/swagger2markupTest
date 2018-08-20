@@ -19,6 +19,7 @@
 
 package io.github.robwin.swagger2markup.petstore.controller;
 
+import io.github.robwin.swagger2markup.petstore.model.Order;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -33,16 +34,37 @@ import io.github.robwin.swagger2markup.petstore.repository.MapBackedRepository;
 
 import java.util.List;
 
+import static io.github.robwin.swagger2markup.petstore.Responses.ok;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @Controller
 @RequestMapping(value = "/pets", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE, "application/x-smile"})
-@Api(value = "/pets", tags = "Pets", description = "关于pets的操作")
+@Api(value = "/pets", tags = "Pets1", description = "关于pets的操作")
 public class PetController {
 
   PetRepository petData = new PetRepository();
+  @RequestMapping(value = "/order/{orderId}", method = GET)
+  @ApiOperation(
+          value = "Find purchase order by ID",
+          notes = "For valid response try integer IDs with value <= 5 or > 10. Other values will generated exceptions",
+          response = Order.class)
+  @ApiResponses(value = {
+          @ApiResponse(code = 400, message = "Invalid ID supplied"),
+          @ApiResponse(code = 404, message = "Order not found")})
+  public ResponseEntity<Order> getOrderById(
+          @ApiParam(value = "ID of pet that needs to be fetched", allowableValues = "range[1,5]", required = true)
+          @PathVariable("orderId") String orderId)
+          throws NotFoundException {
+   // Order order = storeData.get(Long.valueOf(orderId));
+//    if (null != order) {
+//      return ok(order);
+//    } else {
+//      throw new NotFoundException(404, "Order not found");
+//    }
+    throw new NotFoundException(404, "Order not found");
+  }
 
   @RequestMapping(value = "/{petId}", method = GET)
   @ApiOperation(
